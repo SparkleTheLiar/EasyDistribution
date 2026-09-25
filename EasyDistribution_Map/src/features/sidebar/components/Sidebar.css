@@ -82,13 +82,13 @@
   width: max-content;
   max-width: 100%;
   display: grid;
-  justify-items: start;
+  justify-items: stretch;
   gap: 8px;
 }
 
 .sidebar__link {
   position: relative;
-  width: max-content;
+  width: auto;
   max-width: 100%;
   min-height: 60px;
   display: grid;

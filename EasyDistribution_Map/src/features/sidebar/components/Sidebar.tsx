@@ -1,8 +1,7 @@
 import type { JSX } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { sidebarItems } from '../data/sidebarItems'
-import { useSidebarNavigation } from '../hooks/useSidebarNavigation'
-import type { SidebarItem } from '../types/sidebar.types'
+import type { SidebarItem, SidebarPageId } from '../types/sidebar.types'
 import './Sidebar.css'
 
 interface SidebarItemIconProps {
@@ -17,11 +16,11 @@ function SidebarItemIcon(props: SidebarItemIconProps): JSX.Element {
 
 interface SidebarProps {
   className?: string
+  activePageId: SidebarPageId
+  onNavigate: (pageId: SidebarPageId) => void
 }
 
 export function Sidebar(props: SidebarProps): JSX.Element {
-  const navigation = useSidebarNavigation({ initialActiveItemId: 'home' })
-
   return (
     <aside
       className={`sidebar${props.className ? ` ${props.className}` : ''}`}
@@ -36,7 +35,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
 
       <nav className="sidebar__navigation">
         {sidebarItems.map((item) => {
-          const isActive = navigation.activeItemId === item.id
+          const isActive = props.activePageId === item.pageId
 
           return (
             <a
@@ -46,7 +45,9 @@ export function Sidebar(props: SidebarProps): JSX.Element {
               aria-label={item.label}
               aria-current={isActive ? 'page' : undefined}
               title={item.label}
-              onClick={() => navigation.setActiveItem(item.id)}
+              onClick={() => {
+                props.onNavigate(item.pageId)
+              }}
             >
               <SidebarItemIcon icon={item.icon} />
               <span className="sidebar__link-label">{item.label}</span>

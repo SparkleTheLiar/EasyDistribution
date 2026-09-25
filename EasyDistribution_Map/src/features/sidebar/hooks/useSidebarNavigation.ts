@@ -1,21 +1,22 @@
 import { useState } from 'react'
+import type { SidebarPageId } from '../types/sidebar.types'
 
 
 interface UseSidebarNavigationProps {
-  initialActiveItemId: string
+  initialActiveItemId: SidebarPageId
 }
 
 interface UseSidebarNavigationResult {
-  activeItemId: string
-  setActiveItem: (itemId: string) => void
+  activeItemId: SidebarPageId
+  setActiveItem: (itemId: SidebarPageId) => void
 }
 
 export function useSidebarNavigation(
   props: UseSidebarNavigationProps,
 ): UseSidebarNavigationResult {
-  const [activeItemId, setActiveItemId] = useState<string>(props.initialActiveItemId)
+  const [activeItemId, setActiveItemId] = useState<SidebarPageId>(props.initialActiveItemId)
 
-  function setActiveItem(itemId: string): void {
+  function setActiveItem(itemId: SidebarPageId): void {
     setActiveItemId(itemId)
   }
 

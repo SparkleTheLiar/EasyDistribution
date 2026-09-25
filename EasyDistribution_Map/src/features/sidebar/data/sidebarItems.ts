@@ -1,4 +1,4 @@
-import { UserRound } from 'lucide-react'
+import { Map, UserRound } from 'lucide-react'
 import type { SidebarItem } from '../types/sidebar.types'
 
 export const sidebarItems: SidebarItem[] = [
@@ -7,5 +7,13 @@ export const sidebarItems: SidebarItem[] = [
     label: 'Pagina principală',
     icon: UserRound,
     href: '#home',
+    pageId: 'home',
+  },
+  {
+    id: 'map',
+    label: 'Hartă',
+    icon: Map,
+    href: '#map',
+    pageId: 'map',
   },
 ]
