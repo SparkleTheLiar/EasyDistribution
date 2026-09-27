@@ -4,6 +4,10 @@
   height: 100%;
 }
 
+.delivery-map {
+  position: relative;
+}
+
 .delivery-map__canvas {
   background-color: #e8edf2;
   font-family: var(--sans);

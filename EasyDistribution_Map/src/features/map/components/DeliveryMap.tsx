@@ -1,9 +1,12 @@
 import type { JSX } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import { CurrentRoutesPanel } from '../../current-routes/components/CurrentRoutesPanel'
+import { useRouteTracking } from '../../routes/hooks/useRouteTracking'
 import { defaultMapSettings } from '../data/mapSettings'
 import { useMapAutoResize } from '../hooks/useMapAutoResize'
 import type { DeliveryMapProps } from '../types/map.types'
+import { RouteStopsLayer } from './RouteStopsLayer'
 import './DeliveryMap.css'
 
 function MapResizeObserver(): null {
@@ -13,6 +16,7 @@ function MapResizeObserver(): null {
 
 export function DeliveryMap(props: DeliveryMapProps): JSX.Element {
   const settings = props.settings ?? defaultMapSettings
+  const routeTracking = useRouteTracking()
 
   return (
     <div className="delivery-map" aria-label="Hartă OpenStreetMap">
@@ -26,12 +30,19 @@ export function DeliveryMap(props: DeliveryMapProps): JSX.Element {
         keyboard
         zoomControl
       >
+        <RouteStopsLayer route={routeTracking.selectedRoute} />
         <TileLayer
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
         />
         <MapResizeObserver />
       </MapContainer>
+      <CurrentRoutesPanel
+        routes={routeTracking.routes}
+        selectedRouteId={routeTracking.selectedRouteId}
+        secondsUntilNextUpdate={routeTracking.secondsUntilNextUpdate}
+        onRouteSelect={routeTracking.selectRoute}
+      />
     </div>
   )
 }
