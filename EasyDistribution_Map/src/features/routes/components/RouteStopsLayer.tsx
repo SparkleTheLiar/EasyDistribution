@@ -3,12 +3,13 @@ import type { DivIcon } from 'leaflet'
 import { memo } from 'react'
 import type { JSX } from 'react'
 import { Marker, Popup } from 'react-leaflet'
-import type { DeliveryRoute, RouteStop } from '../../routes/types/route.types'
+
+import type { DeliveryRoute, RouteStop } from '../types/route.types'
 import './RouteStopMarker.css'
 
 type RouteStopVisualStatus = 'current' | 'visited' | 'refused' | 'upcoming'
 
-interface RouteStopMarkerProps {
+interface createRouteStopIconProps {
   route: DeliveryRoute
   stop: RouteStop
   visualStatus: RouteStopVisualStatus
@@ -23,7 +24,7 @@ function escapeHtml(value: string): string {
     .replaceAll("'", '&#039;')
 }
 
-function createRouteStopIcon(props: RouteStopMarkerProps): DivIcon {
+function createRouteStopIcon(props: createRouteStopIconProps): DivIcon {
   const routeName = escapeHtml(props.route.name)
   const className = `route-stop-marker route-stop-marker--${props.visualStatus}`
   const html = `
@@ -103,7 +104,7 @@ export const RouteStopsLayer = memo(function RouteStopsLayer(props: RouteStopsLa
           visualStatus = 'current'
         }
 
-        const markerProps: RouteStopMarkerProps = {
+        const markerProps: createRouteStopIconProps = {
           route: props.route,
           stop,
           visualStatus,

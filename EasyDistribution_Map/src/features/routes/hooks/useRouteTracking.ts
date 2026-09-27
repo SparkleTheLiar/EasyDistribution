@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
 import { mockRoutes } from '../data/mockRoutes'
 import type { DeliveryRoute } from '../types/route.types'
 import { advanceRoute } from '../utils/advanceRoute'
+
+const ROUTE_UPDATE_INTERVAL_MS = 30_000
 
 interface UseRouteTrackingResult {
   routes: DeliveryRoute[]
@@ -11,29 +14,27 @@ interface UseRouteTrackingResult {
   selectRoute: (routeId: string) => void
 }
 
-const ROUTE_UPDATE_INTERVAL_MS = 30_000
-
 export function useRouteTracking(): UseRouteTrackingResult {
   const [routes, setRoutes] = useState<DeliveryRoute[]>(mockRoutes)
   const [selectedRouteId, setSelectedRouteId] = useState<string>(mockRoutes[0].id)
+  const selectedRouteIdRef = useRef<string>(selectedRouteId)
   const [nextUpdateAt, setNextUpdateAt] = useState<number>(() => Date.now() + ROUTE_UPDATE_INTERVAL_MS)
   const [currentTime, setCurrentTime] = useState<number>(() => Date.now())
 
   useEffect(() => {
-    setNextUpdateAt(Date.now() + ROUTE_UPDATE_INTERVAL_MS)
     const updateInterval = window.setInterval(() => {
       const finishedAt = new Date().toLocaleTimeString('ro-RO', {
         hour: '2-digit',
         minute: '2-digit',
       })
       setRoutes((currentRoutes) => currentRoutes.map((route) => (
-        route.id === selectedRouteId ? advanceRoute(route, finishedAt) : route
+        route.id === selectedRouteIdRef.current ? advanceRoute(route, finishedAt) : route
       )))
       setNextUpdateAt(Date.now() + ROUTE_UPDATE_INTERVAL_MS)
     }, ROUTE_UPDATE_INTERVAL_MS)
 
     return () => window.clearInterval(updateInterval)
-  }, [selectedRouteId])
+  }, [])
 
   useEffect(() => {
     const clockInterval = window.setInterval(() => setCurrentTime(Date.now()), 1_000)
@@ -41,6 +42,7 @@ export function useRouteTracking(): UseRouteTrackingResult {
   }, [])
 
   function selectRoute(routeId: string): void {
+    selectedRouteIdRef.current = routeId
     setSelectedRouteId(routeId)
   }
 

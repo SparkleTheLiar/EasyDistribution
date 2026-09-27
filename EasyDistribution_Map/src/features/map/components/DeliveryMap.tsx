@@ -1,17 +1,23 @@
 import type { JSX } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { CurrentRoutesPanel } from '../../current-routes/components/CurrentRoutesPanel'
+
+import { CurrentRoutesPanel } from '../../routes/components/CurrentRoutesPanel'
+import { RouteStopsLayer } from '../../routes/components/RouteStopsLayer'
 import { useRouteTracking } from '../../routes/hooks/useRouteTracking'
 import { defaultMapSettings } from '../data/mapSettings'
 import { useMapAutoResize } from '../hooks/useMapAutoResize'
-import type { DeliveryMapProps } from '../types/map.types'
-import { RouteStopsLayer } from './RouteStopsLayer'
+import type { MapViewSettings } from '../types/map.types'
 import './DeliveryMap.css'
+
 
 function MapResizeObserver(): null {
   useMapAutoResize()
   return null
+}
+
+interface DeliveryMapProps {
+  settings?: MapViewSettings
 }
 
 export function DeliveryMap(props: DeliveryMapProps): JSX.Element {
@@ -19,7 +25,7 @@ export function DeliveryMap(props: DeliveryMapProps): JSX.Element {
   const routeTracking = useRouteTracking()
 
   return (
-    <div className="delivery-map" aria-label="Hartă OpenStreetMap">
+    <div className="delivery-map">
       <MapContainer
         className="delivery-map__canvas"
         center={settings.center}

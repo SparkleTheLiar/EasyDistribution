@@ -1,4 +1,5 @@
 import { Map, UserRound } from 'lucide-react'
+
 import type { SidebarItem } from '../types/sidebar.types'
 
 export const sidebarItems: SidebarItem[] = [
